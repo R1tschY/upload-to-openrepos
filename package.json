@@ -1,0 +1,20 @@
+{
+  "name": "openrepos-playwright",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "run": "node ./index.js",
+    "build": "tsc && ncc build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "module",
+  "description": "",
+  "dependencies": {
+    "@playwright/test": "^1.53.1"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.38.3"
+  }
+}
