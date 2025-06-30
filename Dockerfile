@@ -7,4 +7,4 @@ COPY index.js /opt/openrepos-playwright/index.js
 
 USER node
 WORKDIR /home/node
-CMD ["node", "/opt/openrepos-playwright/index.js"]
+ENTRYPOINT ["node", "/opt/openrepos-playwright/index.js"]

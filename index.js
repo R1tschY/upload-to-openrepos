@@ -1,48 +1,61 @@
-import { firefox } from 'playwright';
-import { parseArgs } from 'node:util';
+import {firefox} from 'playwright';
+import {parseArgs} from 'node:util';
 
 const options = {
-  username: { type: 'string', short: 'u' },
-  password: { type: 'string', short: 'p' },
-  appName: { type: 'string', short: 'a' },
-  rpm: { type: 'string', multiple: true }, // Allows multiple RPM paths
+    username: {type: 'string', short: 'u', default: process.env.OPENREPOS_USERNAME},
+    password: {type: 'string', short: 'p', default: process.env.OPENREPOS_PASSWORD},
+    appname: {type: 'string', short: 'a', default: process.env.OPENREPOS_APPNAME},
+    ["dry-run"]: {type: 'boolean'},
+    rpm: {type: 'string', multiple: true},
+    rpms: {type: 'string', multiple: true},
 };
 
 const {
-  values: { userName, password, appName, rpm },
-} = parseArgs({ options });
+    values: {userName, password, appname: appName, rpm, rpms},
+} = parseArgs({options});
+for (const key of ["username", "password", "appname"]) {
 
-for (const key of Object.keys(options)) {
-  if (
-    !values[key] ||
-    (Array.isArray(values[key]) && values[key].length === 0)
-  ) {
-    throw new Error(`--${key} is required`);
-  }
+    if (
+        !values[key] ||
+        (Array.isArray(values[key]) && values[key].length === 0)
+    ) {
+        throw new Error(`--${key} is required`);
+    }
+}
+
+const all_rpms = []
+if (rpm) {
+    all_rpms.push(...rpm);
+}
+if (rpms) {
+    all_rpms.push(...rpms);
+}
+if (all_rpms.length === 0) {
+    throw new Error("No RPMs specified");
 }
 
 (async () => {
-  const browser = await firefox.launch({
-    headless: false,
-  });
-  const context = await browser.newContext();
-  const page = await context.newPage();
-  await page.goto('https://openrepos.net/');
-  await page
-    .getByRole('textbox', { name: 'Username or e-mail *' })
-    .fill(userName);
-  await page.getByRole('textbox', { name: 'Password *' }).fill(password);
-  await page.getByRole('button', { name: 'Log in' }).click();
-  await page.goto(`https://openrepos.net/content/${userName}/${appName}`);
-  await page.getByRole('link', { name: 'Edit', exact: true }).click();
-  await page
-    .getByRole('group', { name: 'Application versions' })
-    .getByLabel('Add a new file')
-    .setInputFiles(rpm);
-  await page.locator('#edit-field-packages-und-25-upload-button').click();
-  await page.getByRole('button', { name: 'Save' }).click();
+    const browser = await firefox.launch({
+        headless: false,
+    });
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    await page.goto('https://openrepos.net/');
+    await page
+        .getByRole('textbox', {name: 'Username or e-mail *'})
+        .fill(userName);
+    await page.getByRole('textbox', {name: 'Password *'}).fill(password);
+    await page.getByRole('button', {name: 'Log in'}).click();
+    await page.goto(`https://openrepos.net/content/${userName}/${appName}`);
+    await page.getByRole('link', {name: 'Edit', exact: true}).click();
+    await page
+        .getByRole('group', {name: 'Application versions'})
+        .getByLabel('Add a new file')
+        .setInputFiles(all_rpms);
+    await page.locator('#edit-field-packages-und-25-upload-button').click();
+    await page.getByRole('button', {name: 'Save'}).click();
 
-  // ---------------------
-  await context.close();
-  await browser.close();
+    // ---------------------
+    await context.close();
+    await browser.close();
 })();
