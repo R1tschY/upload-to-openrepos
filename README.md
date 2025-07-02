@@ -63,3 +63,7 @@ jobs:
 3. Navigates to your application page
 4. Uploads the specified RPM files
 5. Saves the changes
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
