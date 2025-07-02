@@ -1,5 +1,5 @@
 name: 'Upload to OpenRepos.net'
-description: 'Greet someone and record the time'
+description: 'Upload RPM packages to OpenRepos.net using Playwright automation'
 branding:
   icon: package
   color: green
