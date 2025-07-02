@@ -2,19 +2,16 @@
   "name": "openrepos-playwright",
   "version": "1.0.0",
   "main": "index.js",
+  "private": true,
   "scripts": {
-    "run": "node ./index.js",
-    "build": "tsc && ncc build"
+    "run": "node ./index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Richard Liebscher",
   "license": "MIT",
   "type": "module",
-  "description": "",
+  "description": "This GitHub Action automates the process of uploading RPM packages to https://openrepos.net.",
   "dependencies": {
     "@playwright/test": "^1.53.1"
-  },
-  "devDependencies": {
-    "@vercel/ncc": "^0.38.3"
   }
 }
