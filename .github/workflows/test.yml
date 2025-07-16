@@ -1,0 +1,24 @@
+name: RPM Build
+
+on:
+  push:
+    branches:
+      - '*'
+    
+env:
+  SFOS_RELEASE: 4.5.0.18
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Dry run
+        uses: ./
+        with:
+          login: ${{ secrets.OPENREPOS_LOGIN }}
+          password: ${{ secrets.OPENREPOS_PASSWORD }}
+          appName: 'Refuel'
+          rpms: testdata/harbour-refuel-0.1-1.aarch64.rpm
