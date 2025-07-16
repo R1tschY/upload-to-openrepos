@@ -28,4 +28,5 @@ runs:
     OPENREPOS_APPNAME: ${{ inputs.appName }}
   args:
     - "--rpms"
+    - "${{ inputs.rpms }}"
     - ${{ inputs.dry_run && '--dry-run' }}
