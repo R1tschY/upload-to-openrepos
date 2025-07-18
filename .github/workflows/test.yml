@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - '*'
-    
+
 env:
   SFOS_RELEASE: 4.5.0.18
 
@@ -20,5 +20,6 @@ jobs:
         with:
           login: ${{ secrets.OPENREPOS_LOGIN }}
           password: ${{ secrets.OPENREPOS_PASSWORD }}
-          appName: 'Refuel'
+          app-name: 'Refuel'
           rpms: testdata/harbour-refuel-0.1-1.aarch64.rpm
+          dry-run: true
