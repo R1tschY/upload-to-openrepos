@@ -1,56 +1,22 @@
 import { firefox } from 'playwright';
-import { parseArgs } from 'node:util';
 
-const options = {
-  username: {
-    type: 'string',
-    short: 'u',
-    default: process.env.OPENREPOS_USERNAME,
-  },
-  password: {
-    type: 'string',
-    short: 'p',
-    default: process.env.OPENREPOS_PASSWORD,
-  },
-  appname: {
-    type: 'string',
-    short: 'a',
-    default: process.env.OPENREPOS_APPNAME,
-  },
-  ['dry-run']: { type: 'boolean' },
-  rpm: { type: 'string', multiple: true },
-  rpms: { type: 'string', multiple: true },
-};
-
-const values = parseArgs({ options });
-const {
-  userName,
-  password,
-  appname: appName,
-  rpm,
-  rpms,
-  ['dry-run']: dryRun,
-} = values;
-
-for (const key of ['username', 'password', 'appname']) {
-  if (
-    !values[key] ||
-    (Array.isArray(values[key]) && values[key].length === 0)
-  ) {
-    throw new Error(`--${key} is required`);
+function getInput(name, opts) {
+  const val = process.env[`INPUT_${name.toUpperCase()}`];
+  if (opts && opts.required && !val) {
+    throw new Error(`Required input is missing: ${name}`)
   }
+  if (opts && opts.list) {
+    return val.split('\n').map(i => i.trim());
+  }
+  return val.trim()
 }
 
-const all_rpms = [];
-if (rpm) {
-  all_rpms.push(...rpm);
-}
-if (rpms) {
-  all_rpms.push(...rpms);
-}
-if (all_rpms.length === 0) {
-  throw new Error('No RPMs specified');
-}
+const login = getInput("login", { required: true});
+const password = getInput("password", { required: true});
+const appName = getInput("app-name", { required: true});
+const rpms = getInput("rpms", { required: true});
+const dryRun = getInput("dry-run") === "true";
+
 
 (async () => {
   const browser = await firefox.launch({
@@ -59,9 +25,7 @@ if (all_rpms.length === 0) {
   const context = await browser.newContext();
   const page = await context.newPage();
   await page.goto('https://openrepos.net/');
-  await page
-    .getByRole('textbox', { name: 'Username or e-mail *' })
-    .fill(userName);
+  await page.getByRole('textbox', { name: 'Username or e-mail *' }).fill(login);
   await page.getByRole('textbox', { name: 'Password *' }).fill(password);
   await page.getByRole('button', { name: 'Log in' }).click();
   await page.goto(`https://openrepos.net/content/${userName}/${appName}`);
@@ -69,7 +33,7 @@ if (all_rpms.length === 0) {
   await page
     .getByRole('group', { name: 'Application versions' })
     .getByLabel('Add a new file')
-    .setInputFiles(all_rpms);
+    .setInputFiles(rpms);
   await page.locator('#edit-field-packages-und-25-upload-button').click();
   if (!dryRun) {
     await page.getByRole('button', { name: 'Save' }).click();

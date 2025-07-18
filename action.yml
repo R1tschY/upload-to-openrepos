@@ -10,23 +10,15 @@ inputs:
   password:
     description: 'Corresponding Password'
     required: true
-  appName:
+  app-name:
     description: 'Application name'
     required: true
   rpms:
     description: 'RPM file names delimited by new lines'
     required: true
-  dry_run:
+  dry-run:
     description: 'Make a dry run: Login and upload but do not save.'
     required: false
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  env:
-    OPENREPOS_USERNAME: ${{ inputs.login }}
-    OPENREPOS_PASSWORD: ${{ inputs.password }}
-    OPENREPOS_APPNAME: ${{ inputs.appName }}
-  args:
-    - "--rpms"
-    - "${{ inputs.rpms }}"
-    - ${{ inputs.dry_run && '--dry-run' }}
