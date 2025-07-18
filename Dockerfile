@@ -1,19 +1,12 @@
-FROM node:22-bookworm
+FROM mcr.microsoft.com/playwright:v1.54.0-noble
 
-ARG PLAYWRIGHT_VERSION=1.53.1
-
-RUN npx -y playwright@${PLAYWRIGHT_VERSION} install-deps firefox
-RUN mkdir -p /opt/openrepos-playwright \
-    && chown node:node /opt/openrepos-playwright
-
-USER node
-WORKDIR /home/node
-
-ENV PLAYWRIGHT_BROWSERS_PATH=/home/node/.cache/ms-playwright
-RUN npx -y playwright@${PLAYWRIGHT_VERSION} install firefox
+RUN mkdir -p /opt/openrepos-playwright
 
 COPY package.json package-lock.json /opt/openrepos-playwright/
 RUN cd /opt/openrepos-playwright && npm ci
 COPY index.js /opt/openrepos-playwright/index.js
+
+USER pwuser
+WORKDIR /home/pwuser
 
 ENTRYPOINT ["node", "/opt/openrepos-playwright/index.js"]
