@@ -31,7 +31,7 @@ if (dryRun) {
   await page.getByRole('textbox', { name: 'Username or e-mail *' }).fill(login);
   await page.getByRole('textbox', { name: 'Password *' }).fill(password);
   await page.getByRole('button', { name: 'Log in' }).click();
-  await page.goto(`https://openrepos.net/content/${userName}/${appName}`);
+  await page.goto(`https://openrepos.net/content/${login}/${appName}`);
   await page.getByRole('link', { name: 'Edit', exact: true }).click();
   await page
     .getByRole('group', { name: 'Application versions' })
