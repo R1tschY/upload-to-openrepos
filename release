@@ -1,0 +1,27 @@
+#!/usr/bin/env python3
+
+import subprocess
+import sys
+
+
+def prefix_sublists(lst):
+    for i in range(1, len(lst) + 1):
+        yield lst[:i]
+
+
+def run(args):
+    print(f"> {' '.join(args)}")
+    subprocess.run(args, check=True)
+
+def main():
+    version = sys.argv[1]
+    v = version.split(".")
+
+    for v_prefix in prefix_sublists(v):
+        prefix_version = '.'.join(v_prefix)
+        run(["git", "tag", "-a", f"v{prefix_version}", "-m", f"Release {version}"])
+        run(["git", "push", "origin", f"refs/tags/v{prefix_version}", "--force"])
+
+
+if __name__ == '__main__':
+    main()
