@@ -37,7 +37,7 @@ if (dryRun) {
     .getByRole('group', { name: 'Application versions' })
     .getByLabel('Add a new file')
     .setInputFiles(rpms);
-  await page.locator('#edit-field-packages-und-25-upload-button').click();
+  await page.locator('[id^="edit-field-packages-und-"][id$="-upload-button"]').click();
   if (!dryRun) {
     await page.getByRole('button', { name: 'Save' }).click();
   }
