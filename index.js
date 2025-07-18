@@ -3,20 +3,23 @@ import { firefox } from 'playwright';
 function getInput(name, opts) {
   const val = process.env[`INPUT_${name.toUpperCase()}`];
   if (opts && opts.required && !val) {
-    throw new Error(`Required input is missing: ${name}`)
+    throw new Error(`Required input is missing: ${name}`);
   }
   if (opts && opts.list) {
-    return val.split('\n').map(i => i.trim());
+    return val.split('\n').map((i) => i.trim());
   }
-  return val.trim()
+  return val.trim();
 }
 
-const login = getInput("login", { required: true});
-const password = getInput("password", { required: true});
-const appName = getInput("app-name", { required: true});
-const rpms = getInput("rpms", { required: true});
-const dryRun = getInput("dry-run") === "true";
+const login = getInput('login', { required: true });
+const password = getInput('password', { required: true });
+const appName = getInput('app-name', { required: true });
+const rpms = getInput('rpms', { required: true });
+const dryRun = getInput('dry-run') === 'true';
 
+if (dryRun) {
+  console.warn('Doing dry run ...');
+}
 
 (async () => {
   const browser = await firefox.launch({
