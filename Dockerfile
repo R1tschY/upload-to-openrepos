@@ -9,6 +9,7 @@ RUN mkdir -p /opt/openrepos-playwright \
 USER node
 WORKDIR /home/node
 
+ENV PLAYWRIGHT_BROWSERS_PATH=/home/node/.cache/ms-playwright
 RUN npx -y playwright@${PLAYWRIGHT_VERSION} install firefox
 
 COPY package.json package-lock.json /opt/openrepos-playwright/
