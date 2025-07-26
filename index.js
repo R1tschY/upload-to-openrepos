@@ -51,12 +51,12 @@ if (dryRun) {
   if (!dryRun) {
     console.info('💾 Saving changes ...');
     await page.getByRole('button', { name: 'Save' }).click();
+    console.info(`✅ New RPMs ready at https://openrepos.net/content/${login}/${appName}`);
   } else {
     console.info('🔎 Previewing changes ...');
     await page.getByRole('button', { name: 'Preview' }).click();
+    console.info(`✅ Dry run successfully finished`);
   }
-
-  console.info('✅ Finished');
 
   // ---------------------
   await context.close();
