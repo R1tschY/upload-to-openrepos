@@ -14,7 +14,7 @@ function getInput(name, opts) {
 const login = getInput('login', { required: true });
 const password = getInput('password', { required: true });
 const appName = getInput('app-name', { required: true });
-const rpms = getInput('rpms', { required: true });
+const rpms = getInput('rpms', { required: true }).split(/\r?\n/);
 const dryRun = getInput('dry-run') === 'true';
 
 if (dryRun) {
