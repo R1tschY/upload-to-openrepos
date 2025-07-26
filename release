@@ -7,6 +7,7 @@ from typing import Iterator
 
 
 def prefix_sublists(version: list[str]) -> Iterator[str]:
+    print(version)
     return accumulate(version, lambda *x: ".".join(x))
 
 
@@ -19,8 +20,7 @@ def main():
     v = version.split(".")
 
     to_push: list[str] = []
-    for v_prefix in prefix_sublists(v):
-        prefix_version = '.'.join(v_prefix)
+    for prefix_version in prefix_sublists(v):
         run(["git", "tag", "-a", f"v{prefix_version}", "-m", f"Release {version}", "--force"])
         to_push.append(f"refs/tags/v{prefix_version}")
     
