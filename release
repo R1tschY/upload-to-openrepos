@@ -19,7 +19,7 @@ def main():
 
     for v_prefix in prefix_sublists(v):
         prefix_version = '.'.join(v_prefix)
-        run(["git", "tag", "-a", f"v{prefix_version}", "-m", f"Release {version}"])
+        run(["git", "tag", "-a", f"v{prefix_version}", "-m", f"Release {version}", "--force"])
         run(["git", "push", "origin", f"refs/tags/v{prefix_version}", "--force"])
 
 
