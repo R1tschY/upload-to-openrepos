@@ -7,7 +7,6 @@ from typing import Iterator
 
 
 def prefix_sublists(version: list[str]) -> Iterator[str]:
-    print(version)
     return accumulate(version, lambda *x: ".".join(x))
 
 
