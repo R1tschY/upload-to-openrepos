@@ -19,7 +19,7 @@ uploading specified RPM files to your application page.
 |-------------|--------------------------------------------------|----------|---------|
 | `login`     | Username or e-mail of OpenRepos.net account      | Yes      | -       |
 | `password`  | Corresponding Password                           | Yes      | -       |
-| `appName`   | Application name as it appears in OpenRepos URL  | Yes      | -       |
+| `app-name`  | Application name as it appears in OpenRepos URL  | Yes      | -       |
 | `rpms`      | RPM file names delimited by new lines            | Yes      | -       |
 
 ## Usage
@@ -37,15 +37,12 @@ jobs:
   upload:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
       - name: Upload to OpenRepos
-        uses: R1tschY/openrepos-playwright@v1
+        uses: R1tschY/upload-to-openrepos@v1
         with:
           login: ${{ secrets.OPENREPOS_USERNAME }}
           password: ${{ secrets.OPENREPOS_PASSWORD }}
-          appName: 'your-app-name'
+          app-name: 'your-app'
           rpms: |
             ./RPMS/your-app-1.0.0.armv7hl.rpm
             ./RPMS/your-app-1.0.0.aarch64.rpm
