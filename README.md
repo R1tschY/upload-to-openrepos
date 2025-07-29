@@ -40,7 +40,7 @@ jobs:
       - name: Upload to OpenRepos
         uses: R1tschY/upload-to-openrepos@v1
         with:
-          login: ${{ secrets.OPENREPOS_USERNAME }}
+          login: ${{ vars.OPENREPOS_USERNAME }}
           password: ${{ secrets.OPENREPOS_PASSWORD }}
           app-name: 'your-app'
           rpms: |
