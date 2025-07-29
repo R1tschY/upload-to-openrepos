@@ -18,7 +18,7 @@ jobs:
       - name: Dry run
         uses: ./
         with:
-          login: ${{ secrets.OPENREPOS_LOGIN }}
+          login: ${{ vars.OPENREPOS_LOGIN }}
           password: ${{ secrets.OPENREPOS_PASSWORD }}
           app-name: 'Refuel'
           rpms: testdata/harbour-refuel-0.1-1.aarch64.rpm
